@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f6f7f4" />
+    <meta name="description" content="A simple dashboard for tracking sports equipment." />
+    <title>Fieldhouse — Sports inventory</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <main id="loginView" class="login-wrap">
+      <section class="login-card">
+        <h1><span class="brand-mark">S</span> Sports Inventory <span class="login-version">ADMIN</span></h1>
+        <p class="muted login-description">Sign in to manage your equipment room.</p>
+        <form id="loginForm" class="login-fields">
+          <label>Username<input name="username" autocomplete="username" value="admin" required /></label>
+          <label>Password<input name="password" type="password" autocomplete="current-password" value="admin123" required /></label>
+          <p id="loginError" class="form-error" aria-live="polite"></p>
+          <button class="button button-dark button-wide" type="submit">Sign in</button>
+        </form>
+        <p class="login-demo">Demo credentials — <strong>admin / admin123</strong></p>
+        <p class="prototype-note">Demo sign-in only. Add secure authentication before using real student data.</p>
+      </section>
+    </main>
+
+    <div id="appView" class="app-shell hidden">
+      <aside class="sidebar">
+        <a class="brand" href="#" aria-label="Sports Inventory home" data-tab="give"><span class="brand-mark">S</span><span>Sports Inventory<small>ADMIN WORKSPACE</small></span></a>
+        <nav class="side-nav" aria-label="Main navigation">
+          <button class="nav-item active" data-tab="give"><span class="nav-icon">＋</span> Give item</button>
+          <button class="nav-item" data-tab="inventory"><span class="nav-icon">▤</span> Inventory &amp; records</button>
+          <button class="nav-item" data-tab="stockin"><span class="nav-icon">↓</span> Stock in</button>
+          <button class="nav-item" data-tab="settings"><span class="nav-icon">⚙</span> Settings</button>
+        </nav>
+        <div class="sidebar-bottom">
+          <button id="logoutButton" class="logout-button"><span class="nav-icon">↪</span> Sign out</button>
+          <div class="admin-profile"><span class="avatar">A</span><span><strong>Sports Admin</strong><small>Administrator</small></span><span class="profile-dots">···</span></div>
+        </div>
+      </aside>
+      <section class="main-shell">
+        <header class="topbar">
+          <div class="breadcrumb"><span>Sports department</span><span class="crumb-separator">/</span><strong id="pageCrumb">Give item</strong></div>
+          <div class="topbar-actions"><span class="today-label" id="todayLabel"></span><span class="topbar-avatar">A</span></div>
+        </header>
+        <main id="pageContent" class="page-content"></main>
+      </section>
+    </div>
+
+    <dialog id="returnDialog" class="modal">
+      <form id="returnForm" class="modal-card">
+        <div class="modal-heading"><div><span class="eyebrow">EQUIPMENT RETURN</span><h2>Record a return</h2></div><button type="button" class="icon-button" data-action="close-return" aria-label="Close">×</button></div>
+        <p id="returnSummary" class="muted modal-copy"></p>
+        <input type="hidden" name="issueId" />
+        <div class="form-grid">
+          <label>Quantity returned<input name="returnQty" type="number" min="1" step="1" required /></label>
+          <label>Return date<input name="returnDate" type="date" required /></label>
+        </div>
+        <div class="modal-actions"><button type="button" class="button button-light" data-action="close-return">Cancel</button><button type="submit" class="button button-dark">Save return</button></div>
+      </form>
+    </dialog>
+
+    <dialog id="itemDialog" class="modal">
+      <form id="itemForm" class="modal-card">
+        <div class="modal-heading"><div><span class="eyebrow">INVENTORY ITEM</span><h2 id="itemDialogTitle">Add an item</h2></div><button type="button" class="icon-button" data-action="close-item" aria-label="Close">×</button></div>
+        <input type="hidden" name="itemId" />
+        <div class="form-grid">
+          <label>Item name<input name="name" placeholder="e.g. Tennis racket" required /></label>
+          <label>Brand / specification<input name="model" placeholder="e.g. Yonex GR 303" required /></label>
+          <label>Sport<select name="sport" required></select></label>
+          <label>Unit<select name="unit"><option value="pcs">Pieces</option><option value="pairs">Pairs</option><option value="sets">Sets</option><option value="boxes">Boxes</option><option value="balls">Balls</option></select><small id="unitHint" class="field-hint hidden">The unit is locked after stock activity is recorded.</small></label>
+        </div>
+        <div class="modal-actions"><button type="button" class="button button-light" data-action="close-item">Cancel</button><button type="submit" class="button button-dark">Save item</button></div>
+      </form>
+    </dialog>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>
