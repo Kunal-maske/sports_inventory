@@ -7,6 +7,7 @@
     <meta name="description" content="A simple dashboard for tracking sports equipment." />
     <title>Fieldhouse — Sports inventory</title>
     <link rel="stylesheet" href="styles.css" />
+    <script src="config.js"></script>
     <script src="app.js" defer></script>
   </head>
   <body>
@@ -15,13 +16,13 @@
         <h1><span class="brand-mark">S</span> Sports Inventory <span class="login-version">ADMIN</span></h1>
         <p class="muted login-description">Sign in to manage your equipment room.</p>
         <form id="loginForm" class="login-fields">
-          <label>Username<input name="username" autocomplete="username" value="admin" required /></label>
-          <label>Password<input name="password" type="password" autocomplete="current-password" value="admin123" required /></label>
+          <label>Username<input name="username" autocomplete="username" required /></label>
+          <label>Password<input name="password" type="password" autocomplete="current-password" required /></label>
           <p id="loginError" class="form-error" aria-live="polite"></p>
           <button class="button button-dark button-wide" type="submit">Sign in</button>
         </form>
-        <p class="login-demo">Demo credentials — <strong>admin / admin123</strong></p>
-        <p class="prototype-note">Demo sign-in only. Add secure authentication before using real student data.</p>
+        <p id="loginDemo" class="login-demo"></p>
+        <p id="prototypeNote" class="prototype-note">Local demo only. Do not enter real student or staff data.</p>
       </section>
     </main>
 

@@ -1,4 +1,13 @@
 const STORAGE_KEY = "fieldhouse-sports-inventory-v1";
+const appConfig = window.SPORTS_INVENTORY_CONFIG || {};
+const localPreview = window.location && (
+  window.location.protocol === "file:"
+  || ["localhost", "127.0.0.1"].includes(window.location.hostname)
+);
+const appMode = localPreview && ["demo", "auto"].includes(appConfig.mode)
+  ? "demo"
+  : appConfig.mode === "production" ? "production"
+    : ["demo", "auto"].includes(appConfig.mode) ? "hosted-unconfigured" : "unconfigured";
 
 const demoData = {
   sports: ["Basketball", "Football", "Table Tennis", "Badminton", "Cricket", "Tennis"],
@@ -65,7 +74,7 @@ function readState() {
   }
 }
 
-let state = readState();
+let state = appMode === "demo" ? readState() : structuredClone(demoData);
 let activeTab = "give";
 let issueSearch = "";
 let issueStatus = "all";
@@ -172,7 +181,29 @@ function updateGiveAvailability() {
 }
 
 function updateLogin() {
-  const signedIn = sessionStorage.getItem("fieldhouse-admin") === "signed-in";
+  const loginForm = document.getElementById("loginForm");
+  const loginError = document.getElementById("loginError");
+  const loginDemo = document.getElementById("loginDemo");
+  const prototypeNote = document.getElementById("prototypeNote");
+  const demoCredentials = appConfig.demoCredentials || {};
+  const demoEnabled = appMode === "demo";
+  loginForm.querySelectorAll("input, button").forEach((control) => { control.disabled = !demoEnabled; });
+  loginDemo.classList.toggle("hidden", !demoEnabled);
+  if (demoEnabled) {
+    loginForm.elements.username.value = demoCredentials.username || "";
+    loginForm.elements.password.value = demoCredentials.password || "";
+    loginDemo.textContent = `Demo credentials — ${demoCredentials.username} / ${demoCredentials.password}`;
+    prototypeNote.textContent = "Local demo only. Do not enter real student or staff data.";
+    loginError.textContent = "";
+  } else {
+    sessionStorage.removeItem("fieldhouse-admin");
+    const productionSetupRequired = ["production", "hosted-unconfigured"].includes(appMode);
+    loginError.textContent = productionSetupRequired
+      ? "Hosted sign-in is blocked until secure authentication and shared cloud storage are connected by the IITGN tech team."
+      : "App configuration is missing or invalid. Set config.js to demo for local preview.";
+    prototypeNote.textContent = "Production sign-in and shared data are not connected in this prototype.";
+  }
+  const signedIn = demoEnabled && sessionStorage.getItem("fieldhouse-admin") === "signed-in";
   loginView.classList.toggle("hidden", signedIn);
   appView.classList.toggle("hidden", !signedIn);
   if (signedIn) render();
@@ -577,8 +608,13 @@ document.getElementById("loginForm").addEventListener("submit", (event) => {
   event.preventDefault();
   const values = new FormData(event.currentTarget);
   const error = document.getElementById("loginError");
-  if (values.get("username") !== "admin" || values.get("password") !== "admin123") {
-    error.textContent = "Invalid credentials. Try admin / admin123.";
+  if (appMode !== "demo") {
+    error.textContent = "Sign-in is unavailable until the production authentication integration is implemented.";
+    return;
+  }
+  const demoCredentials = appConfig.demoCredentials || {};
+  if (values.get("username") !== demoCredentials.username || values.get("password") !== demoCredentials.password) {
+    error.textContent = "Invalid demo credentials. Use the values shown below.";
     return;
   }
   sessionStorage.setItem("fieldhouse-admin", "signed-in");
