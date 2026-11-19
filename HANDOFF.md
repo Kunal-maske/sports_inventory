@@ -4,6 +4,8 @@
 
 The GitHub repository contains a working browser prototype, not a production system. The code is in `index.html`, `app.js`, `styles.css`, and `config.js`.
 
+For the detailed execution steps, reference data model, API contract, and deployment sequence, see [IMPLEMENTATION_GUIDE.md](./IMPLEMENTATION_GUIDE.md).
+
 ### Implemented in the prototype
 
 - Four tabs: Give item, Inventory & records, Stock in, and Settings.
@@ -124,3 +126,4 @@ The prototype currently represents each version as an inventory row with a `tota
 ## Repository
 
 Source repository: <https://github.com/Kunal-maske/sports_inventory>
+Implementation instructions: [IMPLEMENTATION_GUIDE.md](./IMPLEMENTATION_GUIDE.md)

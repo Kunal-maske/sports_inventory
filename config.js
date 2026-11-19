@@ -5,6 +5,6 @@ window.SPORTS_INVENTORY_CONFIG = Object.freeze({
     password: "admin123",
   }),
   production: Object.freeze({
-    apiBaseUrl: "https://YOUR_IITGN_API_HOST/api",
+    apiBaseUrl: "https://YOUR_IITGN_API_HOST/api/v1",
   }),
 });

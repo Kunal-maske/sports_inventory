@@ -13,6 +13,6 @@ In demo mode, inventory is stored in this browser's local storage. It is not sha
 
 ## IITGN handoff
 
-See [HANDOFF.md](./HANDOFF.md) for what is implemented, production blockers, the recommended architecture, deployment steps, and acceptance checks.
+See [HANDOFF.md](./HANDOFF.md) for the current status and [IMPLEMENTATION_GUIDE.md](./IMPLEMENTATION_GUIDE.md) for step-by-step instructions to complete the production work.
 
 The production backend and secure authentication are not implemented. On a hosted domain, the default `auto` mode intentionally blocks sign-in instead of exposing the demo. The API URL in `config.js` is only a placeholder and is not connected.
